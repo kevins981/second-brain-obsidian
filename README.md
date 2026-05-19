@@ -188,153 +188,68 @@ Important rules:
 - Update `agent_memory.md` when you learn a durable operational fact about this vault.
 ```
 
-## What Is Included
-
-- `AGENTS.md`: operating instructions for future agents
-- `knowledge_base/`: maintained notes and agent memory placeholders
-- `raw_sources/`: human-owned source material and source index placeholder
-- `.codex/`: Codex hook config and helper scripts
-- `.agents/skills/`: local skills for vault maintenance
-- `conversations/`: ignored local conversation logs
-
-## Daily Use
-
-After initialization, most work falls into a few common patterns.
+## Common usage patterns
 
 ### Add New Material
 
-Put new files into `raw_sources/`. You do not need to organize them first.
+Put new files such as new meeting notes, design docs, into `raw_sources/`. You do not need to organize them first.
 
 Then ask Codex:
 
 ```text
-I added new material to `raw_sources/`.
-
-Please use the ingest skill to inspect it, update the indexes, and create or update any useful knowledge-base notes.
+Added some new files. $ingest
 ```
 
-The ingest workflow should:
-
-- inspect the new source material
-- ask questions when currentness, relevance, or authority is unclear
-- update `raw_sources/raw_sources_index.md`
-- create or update notes in `knowledge_base/` when useful
-- update `knowledge_base/knowledge_base_index.md`
-- keep source links traceable
+Note that because the vault is backed by git, the agent will automatically figure out which new files are added.
 
 ### Ask Questions
 
-Ask questions directly. The agent instructions tell Codex to read the standing context files, check indexes, and open relevant notes or source files before answering.
+Ask questions directly. The agent will automatically gather context, memories, preferences before answering.
 
-Example prompts:
-
+E.g.
 ```text
-Using the vault context, help me understand what I know about [topic].
+What did we say about X?
 ```
 
 ```text
-Search the vault for anything related to [topic] and summarize the useful context.
-```
-
-```text
-What are the main open questions or uncertainties around [topic]?
+Give me a summary of progress on project Y.
 ```
 
 ### Draft New Work
 
 Use the vault to draft new documents, plans, reports, meeting prep, or other artifacts.
 
-Example prompts:
+Similarly, the agent automatically gathers relevant context before acting.
+
+E.g.
 
 ```text
-Help me draft meeting prep for [meeting/person/project] using the relevant vault context.
+Draft a meeting prep for [meeting/person/project].
 ```
 
 ```text
-Draft a report about [topic] based on the relevant files in this vault.
+Draft a report about [topic].
 ```
 
 ```text
 Turn these notes into a cleaner knowledge-base note.
 ```
 
-```text
-Create a first draft of [document] using files X, Y, and Z as source material.
-```
-
-For this kind of work, Codex should search the vault first instead of relying only on the latest prompt.
-
 ## Maintenance
 
-The vault includes local skills for recurring maintenance tasks.
-
-### `ingest`
-
-Use this when adding new source material.
-
-Typical prompt:
-
-```text
-Please use the ingest skill on the new files in `raw_sources/`.
-```
-
-Use it when:
-
-- new files were added
-- existing raw source files changed meaningfully
-- source material needs to be turned into maintained notes
-- indexes need to reflect newly added material
+The vault includes skills for recurring maintenance tasks.
 
 ### `housekeeping`
 
-Use this to keep the vault healthy and up to date.
+Invoke this skill to keep the vault organized, e.g. update the file indices.
 
-Typical prompt:
-
-```text
-Please use the housekeeping skill to check the vault and clean up anything that needs routine maintenance.
-```
-
-Use it when:
-
-- indexes may be stale
-- memory files may need cleanup
-- changed files need review
-- the vault needs a general health check
-- ordinary edits should be committed and pushed
+Use it every now and then. The agent will do housekeep as it works, but its still beneficial to do this once in a while.
 
 ### `organize`
 
-Use this when the folder layout has become messy and should be reorganized.
-
-Typical prompt:
-
-```text
-Please use the organize skill to review the vault structure and propose a cleanup.
-```
-
-Use it when:
-
-- folders have become confusing
-- many files are in the wrong place
-- source material needs a clearer structure
-- the vault needs a broader reorganization
-
-Do not use this for ordinary ingestion. For new files, use `ingest` first.
+Use this skill when the folder layout has become messy and should be reorganized.
 
 ### `reflect`
 
-Use this to help the agent learn from recent work.
+Use this to help the agent learn your preferences from recent conversations. The agent will keep track of your feedback automatically, but it can be helpful to run this every now and then.
 
-Typical prompt:
-
-```text
-Please use the reflect skill to review recent conversations and suggest any preferences, workflow patterns, or operational memories worth saving.
-```
-
-Use it when:
-
-- the agent should learn your preferences better
-- recent conversations contain useful workflow lessons
-- repeated corrections should become durable preferences
-- agent behavior should be calibrated based on recent sessions
