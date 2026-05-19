@@ -19,6 +19,29 @@ Read the source and relevant context before asking for editing permission. Do no
 
 Before editing `knowledge_base/`, `raw_sources/`, or index files, tell the user the concrete changes you plan to make and ask for permission.
 
+## Proactive Ingest Default
+
+When a new source is added, make a best-effort classification and recommendation after reading the source and nearby context. The user should not have to classify sources from scratch.
+
+Do not hand the user open-ended classification work, such as asking whether a source is current, relevant, or authoritative, unless the answer materially affects the next action and cannot be reasonably inferred.
+
+Instead, state:
+
+- What the source appears to be.
+- How it seems to relate to the existing knowledge base.
+- The recommended treatment.
+- What uncertainty remains.
+- The concrete next action you propose.
+
+Use cautious labels when needed, but still move the work forward.
+
+Ask the user to decide only when:
+
+- Multiple plausible treatments would lead to meaningfully different edits.
+- The source may be sensitive, stale, or private.
+- You are about to change maintained knowledge in a way that affects product direction, strategy, or other high-impact conclusions.
+- The source contradicts existing maintained notes.
+
 ## Starting Point
 
 Use the vault's standing instructions and context files as described in `AGENTS.md`.
@@ -49,19 +72,23 @@ Use this when the user mainly wants the source added to the knowledge base.
 In this mode:
 
 - Understand the source and nearby context.
-- Ask short, easy-to-answer questions about how the source should be treated.
-- Propose the knowledge-base notes or index updates you plan to make after reading the source and nearby context.
+- Recommend how the source should be treated after reading it and nearby context.
+- Ask short, easy-to-answer confirmation questions only at real decision points.
+- Propose the knowledge-base notes or index updates you plan to make.
 - Ask for permission before making those edits.
 - Link knowledge-base notes back to the raw source so the original material remains traceable.
 
 ## Useful Questions
 
-Ask questions that help the user give quick judgment, such as:
+Prefer recommendation-shaped questions that help the user give quick judgment.
 
-- What do you want to get out of this source?
-- Is this current enough to rely on?
-- Should this be treated as a primary source, rough notes, background context, or archive?
+Instead of asking:
+
 - Should this update existing notes, create new notes, or just be indexed for now?
+
+Say:
+
+- I recommend indexing this source now and creating a separate maintained note because it introduces a distinct angle. Does that sound right before I edit maintained notes?
 
 These are examples, not a fixed script. Ask what the situation calls for.
 
