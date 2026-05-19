@@ -235,6 +235,15 @@ Draft a report about [topic].
 Turn these notes into a cleaner knowledge-base note.
 ```
 
+## Agent Behavior Customization
+The agent automatically detects your preferences. You can also make this explicit by mentioning keywords such as `remember that`. E.g. 
+
+```text
+Don't ask me whether you should push doc changes to git. Just do it.
+```
+
+Agent will remember this preference.
+
 ## Maintenance
 
 The vault includes skills for recurring maintenance tasks.
