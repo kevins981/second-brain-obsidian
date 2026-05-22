@@ -253,6 +253,8 @@ This skeleton includes shared instructions and hooks for both Codex and Claude C
 - `.codex/config.toml` enables Codex hooks.
 - `.claude/settings.json` enables Claude Code hooks.
 - `.agents/hooks/` contains provider-neutral hook scripts used by both agents.
+- `.agents/skills/` is the shared source for project skills.
+- `.claude/skills/` contains symlinks to those shared skills so Claude Code can discover them.
 
 The hooks currently do two things:
 
