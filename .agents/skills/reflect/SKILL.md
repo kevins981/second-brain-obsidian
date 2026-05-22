@@ -32,7 +32,7 @@ Each line is one message:
 
 If fewer than five logs exist, use all available logs.
 
-Ignore hidden files, `.gitignore`, hook state, and Codex's global trace files unless the user explicitly asks for them.
+Ignore hidden files, `.gitignore`, hook state, and agent global trace files unless the user explicitly asks for them.
 
 ## Workflow
 

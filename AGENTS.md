@@ -88,6 +88,7 @@ These directories are operational, not knowledge sources:
 
 - `.git/`
 - `.obsidian/`
+- `.claude/`
 - `.codex/`
 - `.codex_temp/`
 - `.agents/`
@@ -95,7 +96,7 @@ These directories are operational, not knowledge sources:
 
 Do not index, summarize, ingest, or save memory from these directories during normal knowledge-base work.
 
-Only inspect or edit them when the user is explicitly working on repository setup, Obsidian configuration, Codex hooks, local skills, or deleted files.
+Only inspect or edit them when the user is explicitly working on repository setup, Obsidian configuration, agent hooks, local skills, or deleted files.
 
 ## User Preferences
 

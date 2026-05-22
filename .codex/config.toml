@@ -5,17 +5,17 @@ hooks = true
 
 [[hooks.UserPromptSubmit.hooks]]
 type = "command"
-command = "bash .codex/hooks/user_prompt_memory_reminder.sh"
+command = "bash .agents/hooks/user_prompt_memory_reminder.sh"
 timeout = 5
 
 [[hooks.UserPromptSubmit.hooks]]
 type = "command"
-command = "python3 .codex/hooks/conversation_logger.py"
+command = "python3 .agents/hooks/conversation_logger.py"
 timeout = 5
 
 [[hooks.Stop]]
 
 [[hooks.Stop.hooks]]
 type = "command"
-command = "python3 .codex/hooks/conversation_logger.py"
+command = "python3 .agents/hooks/conversation_logger.py"
 timeout = 5

@@ -1,6 +1,6 @@
 # Second Brain Obsidian
 
-Starter skeleton for an Obsidian vault managed with Codex agents.
+Starter skeleton for an Obsidian vault managed with agentic coding tools such as Codex or Claude Code.
 
 This repo is meant to become a private personal knowledge base. Do not put private notes, source material, credentials, or conversation logs in a public fork.
 
@@ -10,13 +10,13 @@ Before setup, install and authenticate:
 
 - GitHub CLI (`gh auth login`)
 - Obsidian CLI
-- Codex
+- Codex or Claude Code
 
 ## Recommended Setup
 
-Use this public repo as the skeleton, then ask Codex to create your own private GitHub repo from it.
+Use this public repo as the skeleton, then ask Codex or Claude Code to create your own private GitHub repo from it.
 
-Copy this prompt into Codex:
+Copy this prompt into your agent:
 
 ```text
 I want to create my own private second-brain Obsidian vault from this public skeleton:
@@ -28,7 +28,7 @@ Please set it up for me.
 Assumptions:
 - GitHub CLI is installed and authenticated.
 - Obsidian CLI is installed and available.
-- Codex is installed.
+- Codex or Claude Code is installed.
 - The new repository should be private.
 
 Steps:
@@ -65,7 +65,7 @@ Examples of material that can go in `raw_sources/`:
 
 ## Initialize The Vault
 
-After adding your existing material, copy this prompt into Codex from the root of your private vault:
+After adding your existing material, copy this prompt into Codex or Claude Code from the root of your private vault:
 
 ```text
 You are helping me initialize this Obsidian vault as a second-brain knowledge base.
@@ -194,7 +194,7 @@ Important rules:
 
 Put new files such as new meeting notes, design docs, into `raw_sources/`. You do not need to organize them first.
 
-Then ask Codex:
+Then ask your agent:
 
 ```text
 Added some new files. $ingest
@@ -244,6 +244,21 @@ Don't ask me whether you should push doc changes to git. Just do it.
 
 Agent will remember this preference.
 
+## Agent Support
+
+This skeleton includes shared instructions and hooks for both Codex and Claude Code.
+
+- `AGENTS.md` is the main shared instruction file.
+- `CLAUDE.md` imports `AGENTS.md` so Claude Code reads the same project instructions.
+- `.codex/config.toml` enables Codex hooks.
+- `.claude/settings.json` enables Claude Code hooks.
+- `.agents/hooks/` contains provider-neutral hook scripts used by both agents.
+
+The hooks currently do two things:
+
+- remind the agent to check whether new durable preferences or operational facts should be saved
+- write simple local conversation logs to `conversations/*.jsonl`
+
 ## Maintenance
 
 The vault includes skills for recurring maintenance tasks.
@@ -261,4 +276,3 @@ Use this skill when the folder layout has become messy and should be reorganized
 ### `reflect`
 
 Use this to help the agent learn your preferences from recent conversations. The agent will keep track of your feedback automatically, but it can be helpful to run this every now and then.
-
