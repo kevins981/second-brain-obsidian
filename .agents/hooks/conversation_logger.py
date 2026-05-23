@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
-"""Record simple user/assistant turns from agent hook events."""
+"""Record local user/assistant turns from agent hook events.
+
+This hook does not make network calls or send conversation data to any
+external service. It keeps short-lived state under
+`.agents/state/conversation_logger/` so a submitted user prompt can be paired
+with the assistant response from the later Stop event, then writes the paired
+messages to local `conversations/*.jsonl` files. The runtime state directory is
+intended to be ignored by Git and is created with private file permissions.
+"""
 
 from __future__ import annotations
 
@@ -8,8 +16,10 @@ import hashlib
 import json
 from pathlib import Path
 import sys
-import tempfile
 from typing import Any
+
+
+STATE_DIR = Path(".agents") / "state" / "conversation_logger"
 
 
 def timestamp() -> str:
@@ -34,8 +44,8 @@ def conversations_dir(event: dict[str, Any]) -> Path:
 
 
 def state_dir(event: dict[str, Any]) -> Path:
-    cwd = str(Path(event.get("cwd") or ".").expanduser())
-    return Path(tempfile.gettempdir()) / "agent-conversation-logger" / safe_key(cwd)
+    cwd = Path(event.get("cwd") or ".").expanduser()
+    return cwd / STATE_DIR
 
 
 def event_key(event: dict[str, Any]) -> str:
@@ -68,17 +78,39 @@ def conversation_path(event: dict[str, Any]) -> Path:
     if (conversations / filename).exists():
         filename = f"{stem}-{safe_key(event.get('session_id'))[:8]}.jsonl"
 
-    write_text(mapping, filename + "\n")
+    write_state_text(mapping, filename + "\n")
     return conversations / filename
 
 
-def write_text(path: Path, text: str) -> None:
+def ensure_private_dir(path: Path) -> None:
+    path.mkdir(parents=True, exist_ok=True)
+    path.chmod(0o700)
+
+
+def write_text(path: Path, text: str, *, private: bool = False) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
+    if private:
+        path.chmod(0o600)
+
+
+def write_state_text(path: Path, text: str) -> None:
+    state = state_dir_from_path(path)
+    ensure_private_dir(state.parent)
+    ensure_private_dir(state)
+    ensure_private_dir(path.parent)
+    write_text(path, text, private=True)
+
+
+def state_dir_from_path(path: Path) -> Path:
+    for parent in path.parents:
+        if parent.name == STATE_DIR.name and parent.parent.name == STATE_DIR.parent.name:
+            return parent
+    return path.parent
 
 
 def write_json(path: Path, payload: dict[str, Any]) -> None:
-    write_text(path, json.dumps(payload, ensure_ascii=False, indent=2) + "\n")
+    write_state_text(path, json.dumps(payload, ensure_ascii=False, indent=2) + "\n")
 
 
 def append_message(path: Path, role: str, message: str | None, message_timestamp: str) -> None:
